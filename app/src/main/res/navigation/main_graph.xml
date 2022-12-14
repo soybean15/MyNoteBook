@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/subjectListFragment">
+
+    <fragment
+        android:id="@+id/subjectListFragment"
+        android:name="com.example.mynotebook.presentation.subject_list.SubjectListFragment"
+        android:label="SubjectListFragment" >
+        <action
+            android:id="@+id/action_subjectListFragment_to_subjectFragment"
+            app:destination="@id/subjectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subjectFragment"
+        android:name="com.example.mynotebook.presentation.subject.SubjectFragment"
+        android:label="SubjectFragment" />
+</navigation>

@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+<!--    <color name="purple_200">#FFBB86FC</color>-->
+<!--    <color name="purple_500">#FF6200EE</color>-->
+<!--    <color name="purple_700">#FF3700B3</color>-->
+<!--    <color name="teal_200">#FF03DAC5</color>-->
+<!--    <color name="teal_700">#FF018786</color>-->
+<!--    <color name="black">#FF000000</color>-->
+<!--    <color name="white">#FFFFFFFF</color>-->
+
+
+    <color name="green_800">#1b6541</color>
+    <color name="green_700">#1b80a9</color>
+    <color name="purple_700">#54259c</color>
+    <color name="yellow_900">#9c7225</color>
+    <color name="orange_900">#9c3725</color>
+    <color name="pink_800">#9c2565</color>
+    <color name="brown_900">#9c5d25</color>
+    <color name="teal_800">#33513c</color>
+    <color name="red_700">#573d4e</color>
+
+
+    <array name="colors">
+        <item>@color/green_800</item>
+        <item>@color/green_700</item>
+        <item>@color/purple_700</item>
+        <item>@color/yellow_900</item>
+        <item>@color/orange_900</item>
+        <item>@color/pink_800</item>
+        <item>@color/brown_900</item>
+        <item>@color/teal_800</item>
+        <item>@color/red_700</item>
+    </array>
+
+
 </resources>
