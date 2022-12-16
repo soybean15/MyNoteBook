@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -42,96 +43,114 @@ fun CustomAlertDialog(
 //        }
 
 
-        Card(
-            //shape = MaterialTheme.shapes.medium,
-            shape = RoundedCornerShape(10.dp),
-            // modifier = modifier.size(280.dp, 240.dp)
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            elevation = 8.dp
-        ) {
-            Column(
-                Modifier
+
+
+            Card(
+                //shape = MaterialTheme.shapes.medium,
+                shape = RoundedCornerShape(10.dp),
+                // modifier = modifier.size(280.dp, 240.dp)
+                modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
+                    .padding(8.dp),
+                elevation = 8.dp
             ) {
 
 
-                Row(
-                    modifier = Modifier
+                Column(
+                    Modifier
                         .fillMaxWidth()
-                        .height(50.dp)
-                        .background(MaterialTheme.colors.primary),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-
-                    ) {
+                        .background(MaterialTheme.colors.background)
+                ) {
 
 
-                }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .background(MaterialTheme.colors.primary),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
 
-                OutlinedTextField(
-                    value = text,
-                    label = { Text(text = "Enter Subject") },
-                    onValueChange = {
-                        onTextChange(it)
-                        if(it.isNotEmpty()){
-                            warning = ""
+                        ) {
 
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
 
-                if(!success){
-                    Text(
-                        text =warning,
-                        color = Color.Red,
-                        modifier = Modifier.padding(8.dp)
+                    }
+
+                    OutlinedTextField(
+                        value = text,
+                        label = { Text(text = "Enter Subject") },
+                        onValueChange = {
+                            onTextChange(it)
+                            if(it.isNotEmpty()){
+                                warning = ""
+
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                            ,
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = MaterialTheme.colors.surface,
+                            unfocusedBorderColor = Color.LightGray),
+
 
                         )
-                }
 
 
-                Row(Modifier.padding(top = 10.dp)) {
-                    OutlinedButton(
-                        onClick = { onDismiss() },
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = "Cancel")
+
+
+                    if(!success){
+                        Text(
+                            text =warning,
+                            color = Color.Red,
+                            modifier = Modifier.padding(8.dp)
+
+                        )
                     }
 
 
-                    Button(
-                        onClick = {
-                              if(text.isEmpty()){
-                                  success=false
-                                  warning ="Please Enter Subject"
-                            }else{
-                                onExecuteAdd()
-                                  success= true
-                                  onDismiss()
-                            }
+                    Row(Modifier.padding(top = 10.dp)) {
+                        OutlinedButton(
+                            onClick = { onDismiss() },
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .weight(1F)
+                        ) {
+                            Text(text = "Cancel")
+                        }
 
 
-                        },
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = "Save")
+                        Button(
+                            onClick = {
+                                if(text.isEmpty()){
+                                    success=false
+                                    warning ="Please Enter Subject"
+                                }else{
+                                    onExecuteAdd()
+                                    success= true
+                                    onDismiss()
+                                }
+
+
+                            },
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .weight(1F)
+                        ) {
+                            Text(text = "Save")
+                        }
                     }
+
+
                 }
-
-
             }
-        }
+
+
+
+
+
     }
 }

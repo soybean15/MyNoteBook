@@ -122,12 +122,15 @@ class SubjectListFragment :Fragment(){
 
 
 
+
+
                             LazyColumn() {
                                 itemsIndexed(
                                     items = subjects.sortedByDescending {
                                         it.timeStamp
                                     }
                                 ) { _, subject ->
+
                                     SubjectItem(
                                         subject = subject,
                                         onConvertDateToString = viewModel::toTimeDateString,
@@ -135,6 +138,7 @@ class SubjectListFragment :Fragment(){
                                             selectedSubject.value = subject
                                             viewModel.addToFavorites(subject)
                                         }
+                                    , favorites = subject.favorites
                                     )
 
 

@@ -30,17 +30,17 @@ import kotlin.math.exp
 fun SubjectItem(
     subject: Subject,
     onConvertDateToString:(Long)->String,
-    onAddToFavorites:(Subject)->Subject
+    onAddToFavorites:(Subject)->Subject,
+    favorites :Boolean
 ){
-//
-//    var favorite by remember  {
-//        mutableStateOf(false)
-//    }
 
-   var favorites by remember {
+    var _favorites=favorites
 
-       mutableStateOf(subject.favorites)
-   }
+
+
+   //not updating once adding new subject
+
+
 
     var expanded by remember {
         mutableStateOf(false)
@@ -127,8 +127,7 @@ fun SubjectItem(
                         .width(30.dp),
                     onClick = {
 
-                        favorites = onAddToFavorites(subject).favorites
-                        Log.d("favorites", "Fav ${subject.favorites}")
+                        _favorites = onAddToFavorites(subject).favorites
 
                     }
 
@@ -139,8 +138,8 @@ fun SubjectItem(
                         Icons.Filled.Favorite
                                    ,
                         contentDescription = "",
-                        tint =if ( favorites){
-                            Log.d("fromIcon","fave ${subject.favorites}")
+                        tint =if ( _favorites){
+
                             pink
                         }else{
                             Color.White
