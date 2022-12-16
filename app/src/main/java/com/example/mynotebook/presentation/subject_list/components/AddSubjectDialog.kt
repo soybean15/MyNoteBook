@@ -2,6 +2,8 @@ package com.example.mynotebook.presentation.subject_list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement.Absolute.Center
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -72,6 +74,10 @@ fun CustomAlertDialog(
                         horizontalArrangement = Arrangement.Center,
 
                         ) {
+                        Text(
+                            text = "New Subject",
+
+                        )
 
 
                     }
@@ -92,7 +98,7 @@ fun CustomAlertDialog(
                             ,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             focusedBorderColor = MaterialTheme.colors.surface,
-                            unfocusedBorderColor = Color.LightGray),
+                            unfocusedBorderColor = MaterialTheme.colors.onSurface),
 
 
                         )
@@ -110,7 +116,7 @@ fun CustomAlertDialog(
                     }
 
 
-                    Row(Modifier.padding(top = 10.dp)) {
+                    Row(Modifier) {
                         OutlinedButton(
                             onClick = { onDismiss() },
                             Modifier

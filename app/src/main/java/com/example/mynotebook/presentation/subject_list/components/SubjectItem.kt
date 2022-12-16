@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -16,7 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.mynotebook.R
@@ -31,17 +35,20 @@ fun SubjectItem(
     subject: Subject,
     onConvertDateToString:(Long)->String,
     onAddToFavorites:(Subject)->Subject,
-    favorites :Boolean
+    favorites :Boolean,
+    onClick:()->Unit,
+    onOpenDialogClicked:(Subject)->Unit,
+    onDialogDismiss:()->Unit,
+    showDialog :Boolean,
+    subjectToObserve:Subject,
+    onDelete:()->Unit
+
 ){
 
     var _favorites=favorites
 
 
-
-   //not updating once adding new subject
-
-
-
+    //for dropdownMenu
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -49,7 +56,10 @@ fun SubjectItem(
 
     Surface(modifier = Modifier
         .fillMaxWidth()
-        .padding(8.dp),
+        .padding(8.dp)
+        .clickable(onClick = {
+            onClick()
+        }),
 
         elevation = 8.dp,
         color = Color(color = subject.color),
@@ -64,7 +74,6 @@ fun SubjectItem(
                         .padding(8.dp),
                     style = MaterialTheme.typography.h4,
                     color = Color.White,
-
 
 
 
@@ -88,10 +97,17 @@ fun SubjectItem(
                         DropdownMenuItem(
                             onClick = {
 
+
                                 if(index == 0){
-                                    //edit
+
+
                                 }else{
-                                    //delete
+
+                                    expanded = !expanded
+                                    onOpenDialogClicked(subject)
+
+
+
                                 }
                             },
 
@@ -114,7 +130,6 @@ fun SubjectItem(
                     color = Color.White,
 
                     )
-
 
 
 
@@ -155,5 +170,17 @@ fun SubjectItem(
         }
 
     }
+
+
+    ConfirmDialog(
+        onDismiss = onDialogDismiss,
+        onConfirm = { onDelete() },
+        showDialog=showDialog,
+        subject = subjectToObserve
+    )
+
+
+
+
 
 }

@@ -18,7 +18,7 @@ interface SubjectDao {
     fun findSubject(name: String): Flow<List<Subject>>
 
     @Query("DELETE FROM subject WHERE id = :id")
-    fun deleteProduct(id: Long)
+    fun deleteProduct(id: Int)
 
     @Query("Select * from Subject")
     fun getSubjects(): Flow<List<Subject>>

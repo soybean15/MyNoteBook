@@ -12,6 +12,7 @@ val pink =  Color(0xFFCC31CC)
 val primary = Color(0xFF2c7caf)
 val black1 =  Color(0xFF212222)
 val black2 =  Color(0xFF323333)
+val LightonSurface =  Color(0xFFEAECEC)
 
 
 

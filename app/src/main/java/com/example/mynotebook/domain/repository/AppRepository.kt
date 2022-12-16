@@ -16,7 +16,7 @@ interface AppRepository {
 
     suspend fun insertSubject(subject: Subject)
 
-    suspend fun deleteSubject(id: Long)
+    suspend fun deleteSubject(id: Int)
 
     suspend fun findSubject(name: String):Flow<List<Subject>>
 

@@ -1,5 +1,6 @@
 package com.example.mynotebook.presentation.subject_list.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,12 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.room.Query
+import com.example.mynotebook.ui.theme.black1
+import com.google.android.material.color.MaterialColors
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -35,7 +39,7 @@ fun SearchBar(
     val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colors.surface,
+        color = MaterialTheme.colors.primary,
         elevation = 8.dp
     ) {
         Column() {
@@ -46,7 +50,8 @@ fun SearchBar(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth(.9f)
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        ,
                     value = text,
                     onValueChange = {
                         onQueryChange(it)
@@ -62,12 +67,21 @@ fun SearchBar(
                         }
                     ),
                     label = {
-                        Text(text = "Search")
+                        Text(
+                            text = "Search",
+                            color = MaterialTheme.colors.onPrimary
+
+                        )
                     },
                     leadingIcon = {
                         Icon(imageVector = Icons.Filled.Search, contentDescription = "")
                     },
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(30.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = MaterialTheme.colors.surface,
+                        unfocusedBorderColor = MaterialTheme.colors.onSurface,
+
+                        ),
 
 
                 )

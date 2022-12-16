@@ -17,7 +17,7 @@ class AppRepositoryImpl(
 
     override suspend fun insertSubject(subject: Subject) = dao.insertSubject(subject)
 
-    override suspend fun deleteSubject(id: Long) = dao.deleteProduct(id)
+    override suspend fun deleteSubject(id: Int) = dao.deleteProduct(id)
 
     override suspend fun findSubject(name: String) :Flow<List<Subject>> = dao.findSubject(name)
 

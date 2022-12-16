@@ -3,6 +3,7 @@ package com.example.mynotebook.presentation.subject_list
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +15,12 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.mynotebook.BaseApplication
 import com.example.mynotebook.domain.model.Subject
 import com.example.mynotebook.presentation.subject_list.components.AppDrawer
@@ -31,7 +30,8 @@ import com.example.mynotebook.presentation.subject_list.components.SubjectItem
 import com.example.mynotebook.ui.theme.MyNoteBookTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
+import com.example.mynotebook.R
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SubjectListFragment :Fragment(){
@@ -62,9 +62,7 @@ class SubjectListFragment :Fragment(){
 
                 val currentDate = viewModel.currentDate.value
 
-                var showCustomDialog by remember {
-                    mutableStateOf(false)
-                }
+                var showCustomDialog = viewModel.showAddDialog.collectAsState()
 
 
 
@@ -73,7 +71,7 @@ class SubjectListFragment :Fragment(){
                     Scaffold(
                         floatingActionButton  = {
                             FloatingActionButton(
-                                onClick = { showCustomDialog = !showCustomDialog},
+                                onClick = { viewModel.onOpenCustomDialog()},
                                 backgroundColor = MaterialTheme.colors.primary,
 
 
@@ -113,16 +111,10 @@ class SubjectListFragment :Fragment(){
 
 
 
-                            val selectedSubject = remember {
-                                mutableStateOf(Subject("",0,0,false))
-                            }
+                            val showDialogState: Boolean by viewModel.showDialog.collectAsState()
 
 
-
-
-
-
-
+                             val subjectToObserve = viewModel.subject.value
 
                             LazyColumn() {
                                 itemsIndexed(
@@ -135,10 +127,27 @@ class SubjectListFragment :Fragment(){
                                         subject = subject,
                                         onConvertDateToString = viewModel::toTimeDateString,
                                         onAddToFavorites = {
-                                            selectedSubject.value = subject
+                                        //    selectedSubject.value = subject
                                             viewModel.addToFavorites(subject)
-                                        }
-                                    , favorites = subject.favorites
+                                        },
+                                        favorites = subject.favorites,
+                                        onClick = {
+                                            val navController = findNavController()
+
+                                            val bundle = Bundle()
+                                            bundle.putInt("subject_id",subject.id)
+
+                                            navController.navigate(R.id.action_subjectListFragment_to_subjectFragment, bundle)
+
+                                        },
+
+                                        onOpenDialogClicked = viewModel::onOpenDialogClicked,
+                                        onDialogDismiss = viewModel::onDialogDismiss,
+                                        showDialog = showDialogState,
+                                        subjectToObserve = subjectToObserve,
+                                        onDelete = viewModel::deleteSubject
+
+
                                     )
 
 
@@ -153,11 +162,13 @@ class SubjectListFragment :Fragment(){
 
 
 
-                        if (showCustomDialog){
+                        if (showCustomDialog.value){
                             CustomAlertDialog(
                                 onDismiss = {
-                                showCustomDialog = !showCustomDialog
-                                 },
+                                    viewModel.onDismissCustomDialog()
+                                }
+
+                                 ,
                                 onTextChange = viewModel::onSubjectTextChange,
                                 text = subjectStr,
                                 onExecuteAdd =  viewModel::addSubject,

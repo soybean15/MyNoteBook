@@ -13,6 +13,9 @@ import com.example.mynotebook.domain.repository.AppRepository
 import com.example.mynotebook.ui.theme.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -34,6 +37,7 @@ class SubjectListViewModel
     var subjects = mutableStateOf(emptyList<Subject>())
 
 
+
     val current = LocalDateTime.now()
 
     val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy ")
@@ -45,6 +49,19 @@ class SubjectListViewModel
         green_800, purple_700, yellow_900, orange_900, pink_800, brown_900, teal_800,
         red_700
     )
+
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
+
+    private val _showAddDialog = MutableStateFlow(false)
+    val showAddDialog: StateFlow<Boolean> = _showAddDialog.asStateFlow()
+
+
+    var subject = mutableStateOf(Subject("",0,0,false))
+
+
+
+
     init {
         getSubjects()
         getFavorites()
@@ -104,6 +121,22 @@ class SubjectListViewModel
 
     }
 
+    fun deleteSubject(){
+
+
+            viewModelScope.launch(IO) {
+                repository.deleteSubject(subject.value.id)
+
+
+            }
+            _showDialog.value = false
+
+
+
+
+
+    }
+
 
 
     fun addToFavorites(_subject: Subject):Subject{
@@ -133,5 +166,24 @@ class SubjectListViewModel
 
     fun toTimeDateString(longDate:Long): String {
         return Date(longDate).toString()
+    }
+
+
+    fun onOpenDialogClicked(subject: Subject) {
+       this.subject.value = subject
+        _showDialog.value = true
+    }
+
+
+
+    fun onDialogDismiss() {
+        _showDialog.value = false
+    }
+
+    fun onOpenCustomDialog (){
+        _showAddDialog.value = true
+    }
+    fun onDismissCustomDialog (){
+        _showAddDialog.value = false
     }
 }
