@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 
 import androidx.lifecycle.*
@@ -13,6 +14,8 @@ import com.example.mynotebook.ui.theme.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
@@ -29,11 +32,13 @@ class SubjectListViewModel
 
     var favoriteSubjects = mutableStateOf(emptyList<Subject>())
     var subjects = mutableStateOf(emptyList<Subject>())
-    var subject = mutableStateOf(Subject("",0,0,false))
-        private set
-    fun setSubject(_subject: Subject){
-       subject.value= _subject
-    }
+
+
+    val current = LocalDateTime.now()
+
+    val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy ")
+    val currentDate = mutableStateOf(  current.format(formatter))
+
 
 
     private val colors = listOf(

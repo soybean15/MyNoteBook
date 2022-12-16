@@ -60,6 +60,8 @@ class SubjectListFragment :Fragment(){
                 val subjects =viewModel.subjects.value
                 val favorites = viewModel.favoriteSubjects.value
 
+                val currentDate = viewModel.currentDate.value
+
                 var showCustomDialog by remember {
                     mutableStateOf(false)
                 }
@@ -85,7 +87,8 @@ class SubjectListFragment :Fragment(){
                                 toggleLightTheme ={
                                     application.toggleLightTheme()
                                 },
-                                favorites
+                                favorites,
+                                currentDate = currentDate
 
                             )
                         },
