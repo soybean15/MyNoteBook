@@ -20,6 +20,10 @@ interface AppRepository {
 
     suspend fun findSubject(name: String):Flow<List<Subject>>
 
+    suspend fun addToFavorites(subject: Subject)
+
+    suspend fun getFavorites():Flow<List<Subject>>
+
 
 
 }

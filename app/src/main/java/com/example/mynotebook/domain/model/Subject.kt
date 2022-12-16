@@ -10,7 +10,9 @@ import java.io.Serializable
 data class Subject (
     var name: String,
     var timeStamp:Long,
-    val color:Int): Serializable {
+    val color:Int,
+    var favorites:Boolean
+    ): Serializable {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 

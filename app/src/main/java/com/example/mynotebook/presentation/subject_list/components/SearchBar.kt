@@ -29,7 +29,6 @@ import androidx.room.Query
 fun SearchBar(
     text: String,
     onQueryChange:(String)->Unit,
-    onExecuteAdd:()->Unit,
     onExecuteSearch:()->Unit
 ){
 
@@ -58,7 +57,7 @@ fun SearchBar(
                     ),
                     keyboardActions = KeyboardActions(
                         onGo = {
-                            onExecuteAdd()
+                            onExecuteSearch()
                             keyboardController?.hide()
                         }
                     ),

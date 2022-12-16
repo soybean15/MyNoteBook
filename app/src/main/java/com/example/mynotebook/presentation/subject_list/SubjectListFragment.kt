@@ -1,7 +1,7 @@
 package com.example.mynotebook.presentation.subject_list
 
 import android.annotation.SuppressLint
-import android.app.Application
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,33 +11,35 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import com.example.mynotebook.BaseApplication
+import com.example.mynotebook.domain.model.Subject
+import com.example.mynotebook.presentation.subject_list.components.AppDrawer
+import com.example.mynotebook.presentation.subject_list.components.CustomAlertDialog
 import com.example.mynotebook.presentation.subject_list.components.SearchBar
 import com.example.mynotebook.presentation.subject_list.components.SubjectItem
 import com.example.mynotebook.ui.theme.MyNoteBookTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class SubjectListFragment :Fragment(){
 
+    @Inject
+    lateinit var application: BaseApplication
 
-    lateinit var viewModel: SubjectListViewModel
+    private lateinit var viewModel: SubjectListViewModel
 
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -53,20 +55,23 @@ class SubjectListFragment :Fragment(){
                 val scaffoldState = rememberScaffoldState()
 
 
-                val text = viewModel.text.value
-                
+                val query = viewModel.query.value
+                val subjectStr = viewModel.subjectToAdd.value
+                val subjects =viewModel.subjects.value
+                val favorites = viewModel.favoriteSubjects.value
 
-                    
+                var showCustomDialog by remember {
+                    mutableStateOf(false)
+                }
 
 
 
-
-                MyNoteBookTheme(darkTheme = false) {
+                MyNoteBookTheme(darkTheme = application.isDark.value) {
 
                     Scaffold(
                         floatingActionButton  = {
                             FloatingActionButton(
-                                onClick = { /*TODO*/ },
+                                onClick = { showCustomDialog = !showCustomDialog},
                                 backgroundColor = MaterialTheme.colors.primary,
 
 
@@ -74,8 +79,20 @@ class SubjectListFragment :Fragment(){
                                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add note")
                             }
                         },
-                        drawerContent = {}
+                        drawerContent = {
+                            AppDrawer(
+                                darkMode = application.isDark.value,
+                                toggleLightTheme ={
+                                    application.toggleLightTheme()
+                                },
+                                favorites
+
+                            )
+                        },
+                        scaffoldState = scaffoldState
                     ) {
+
+
 
                         Column(
                             modifier = Modifier
@@ -85,32 +102,60 @@ class SubjectListFragment :Fragment(){
                             ) {
 
                             SearchBar(
-                                text = text,
-                                onQueryChange = viewModel::onTextChange,
-                                onExecuteAdd = viewModel::addSubject,
+                                text = query,
+                                onQueryChange = viewModel::onQueryChange,
+
                                 onExecuteSearch = viewModel::findSubjects
                             )
 
 
 
+                            val selectedSubject = remember {
+                                mutableStateOf(Subject("",0,0,false))
+                            }
 
 
-                            val subjects =viewModel.subjects.value
+
+
 
 
                             LazyColumn() {
                                 itemsIndexed(
-                                    items = subjects
+                                    items = subjects.sortedByDescending {
+                                        it.timeStamp
+                                    }
                                 ) { _, subject ->
                                     SubjectItem(
                                         subject = subject,
-                                        onConvertDateToString = viewModel::toTimeDateString
+                                        onConvertDateToString = viewModel::toTimeDateString,
+                                        onAddToFavorites = {
+                                            selectedSubject.value = subject
+                                            viewModel.addToFavorites(subject)
+                                        }
                                     )
 
 
                                 }
 
                             }
+
+
+                        }
+
+
+
+
+
+                        if (showCustomDialog){
+                            CustomAlertDialog(
+                                onDismiss = {
+                                showCustomDialog = !showCustomDialog
+                                 },
+                                onTextChange = viewModel::onSubjectTextChange,
+                                text = subjectStr,
+                                onExecuteAdd =  viewModel::addSubject,
+
+                            )
 
 
                         }

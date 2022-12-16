@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.mynotebook.BaseApplication
-import com.example.mynotebook.data.data_source.AppDao
 import com.example.mynotebook.data.data_source.AppDatabase
 import com.example.mynotebook.data.repository.AppRepositoryImpl
 import com.example.mynotebook.domain.repository.AppRepository
