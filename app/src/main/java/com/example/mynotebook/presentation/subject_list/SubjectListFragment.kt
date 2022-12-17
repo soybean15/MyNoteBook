@@ -63,7 +63,7 @@ class SubjectListFragment :Fragment(){
                 val currentDate = viewModel.currentDate.value
 
                 val showCustomDialog = viewModel.showAddDialog.collectAsState()
-                val onEdit = viewModel.onEdit.collectAsState()
+
 
 
 
@@ -87,9 +87,11 @@ class SubjectListFragment :Fragment(){
                                     application.toggleLightTheme()
                                 },
                                 favorites,
-                                currentDate = currentDate
+                                currentDate = currentDate,
+                                navController = findNavController()
 
                             )
+
                         },
                         scaffoldState = scaffoldState
                     ) {

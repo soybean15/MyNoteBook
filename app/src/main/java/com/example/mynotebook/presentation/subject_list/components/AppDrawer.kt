@@ -1,6 +1,7 @@
 package com.example.mynotebook.presentation.subject_list.components
 
 import android.icu.number.Scale
+import android.os.Bundle
 import android.text.format.DateUtils
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,6 +31,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.mynotebook.R
 import com.example.mynotebook.domain.model.Subject
 import com.example.mynotebook.ui.theme.black2
@@ -43,7 +46,8 @@ fun AppDrawer(
     darkMode:Boolean,
     toggleLightTheme:()->Unit,
     subjects: List<Subject>,
-    currentDate:String
+    currentDate:String,
+    navController: NavController
 ){
 
 
@@ -107,7 +111,15 @@ fun AppDrawer(
 
                         }
                     ){_,subject->
-                        FavoritesItem(subject = subject)
+                        FavoritesItem(subject = subject,
+                        onClick ={
+
+
+                            val bundle = Bundle()
+                            bundle.putInt("subject_id",subject.id)
+
+                            navController.navigate(R.id.action_subjectListFragment_to_subjectFragment, bundle)
+                        } )
 
                     }
                 }
