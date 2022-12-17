@@ -14,6 +14,8 @@ class AppRepositoryImpl(
 
     override suspend fun subjects(): Flow<List<Subject>> = dao.getSubjects()
 
+    override suspend fun getSubject(id: Int): Flow<Subject> =dao.getSubject(id)
+
 
     override suspend fun insertSubject(subject: Subject) = dao.insertSubject(subject)
 

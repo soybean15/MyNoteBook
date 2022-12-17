@@ -13,8 +13,11 @@ interface SubjectDao {
     @Insert
     fun insertSubject(subject: Subject)
 
+    @Query("Select * from subject where id = :id")
+    fun getSubject(id:Int):Flow<Subject>
 
-    @Query("SELECT * FROM subject WHERE name = :name")
+
+    @Query("SELECT * FROM subject WHERE name like :name || '%'")
     fun findSubject(name: String): Flow<List<Subject>>
 
     @Query("DELETE FROM subject WHERE id = :id")

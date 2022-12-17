@@ -14,6 +14,8 @@ interface AppRepository {
 
     suspend fun subjects(): Flow<List<Subject>>
 
+    suspend fun getSubject(id:Int):Flow<Subject>
+
     suspend fun insertSubject(subject: Subject)
 
     suspend fun deleteSubject(id: Int)

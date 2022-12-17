@@ -12,11 +12,29 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import com.example.mynotebook.BaseApplication
+import com.example.mynotebook.presentation.subject.component.SubjectToolbar
 import com.example.mynotebook.ui.theme.MyNoteBookTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class SubjectFragment:Fragment() {
+
+    @Inject
+    lateinit var application: BaseApplication
+
+    private val viewModel: SubjectViewModel by viewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.getInt("subject_id")?.let { recipeId ->
+            viewModel.getSubject(recipeId)
+
+        }
+    }
+
 
 
     override fun onCreateView(
@@ -27,13 +45,19 @@ class SubjectFragment:Fragment() {
         return ComposeView(requireContext()).apply {
             setContent{
 
-                MyNoteBookTheme(darkTheme = false) {
+
+                val subject = viewModel.subject.value
+                MyNoteBookTheme(darkTheme = application.isDark.value) {
                     Column(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .background(MaterialTheme.colors.background),
 
                     ) {
-                        Text(text = "SubjectFragment")
+                       SubjectToolbar(
+                           subject = subject,
+                           navController =  findNavController()
+                       )
                     }
 
                 }
