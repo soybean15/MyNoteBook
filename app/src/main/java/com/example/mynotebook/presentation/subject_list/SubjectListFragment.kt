@@ -62,7 +62,8 @@ class SubjectListFragment :Fragment(){
 
                 val currentDate = viewModel.currentDate.value
 
-                var showCustomDialog = viewModel.showAddDialog.collectAsState()
+                val showCustomDialog = viewModel.showAddDialog.collectAsState()
+                val onEdit = viewModel.onEdit.collectAsState()
 
 
 
@@ -145,8 +146,7 @@ class SubjectListFragment :Fragment(){
                                         onDialogDismiss = viewModel::onDialogDismiss,
                                         showDialog = showDialogState,
                                         subjectToObserve = subjectToObserve,
-                                        onDelete = viewModel::deleteSubject
-
+                                        onDelete = viewModel::deleteSubject,
 
                                     )
 
@@ -172,6 +172,8 @@ class SubjectListFragment :Fragment(){
                                 onTextChange = viewModel::onSubjectTextChange,
                                 text = subjectStr,
                                 onExecuteAdd =  viewModel::addSubject,
+
+
 
                             )
 

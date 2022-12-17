@@ -194,7 +194,6 @@ fun ImageText(){
 
 
 
-
     ){
 
 

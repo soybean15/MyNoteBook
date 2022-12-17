@@ -27,6 +27,7 @@ class AppRepositoryImpl(
 
     override suspend fun getFavorites(): Flow<List<Subject>> = dao.getFavorites()
 
+    override suspend fun updateSubject(subject: Subject)  = dao.updateSubject(subject)
 
 
 }

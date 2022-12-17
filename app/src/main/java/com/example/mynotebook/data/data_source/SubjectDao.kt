@@ -31,4 +31,7 @@ interface SubjectDao {
 
     @Query("Select * from subject where favorites = 1")
     fun getFavorites(): Flow<List<Subject>>
+
+    @Update
+    fun updateSubject(subject: Subject)
 }

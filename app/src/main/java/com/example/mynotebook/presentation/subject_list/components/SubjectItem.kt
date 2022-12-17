@@ -41,7 +41,8 @@ fun SubjectItem(
     onDialogDismiss:()->Unit,
     showDialog :Boolean,
     subjectToObserve:Subject,
-    onDelete:()->Unit
+    onDelete:()->Unit,
+
 
 ){
 
@@ -100,6 +101,8 @@ fun SubjectItem(
 
 
                                 if(index == 0){
+
+                                //editCode
 
 
                                 }else{

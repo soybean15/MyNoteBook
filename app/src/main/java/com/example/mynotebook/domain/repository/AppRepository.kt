@@ -26,6 +26,8 @@ interface AppRepository {
 
     suspend fun getFavorites():Flow<List<Subject>>
 
+    suspend fun updateSubject(subject: Subject)
+
 
 
 }

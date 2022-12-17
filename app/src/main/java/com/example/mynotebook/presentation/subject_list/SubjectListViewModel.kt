@@ -56,6 +56,10 @@ class SubjectListViewModel
     private val _showAddDialog = MutableStateFlow(false)
     val showAddDialog: StateFlow<Boolean> = _showAddDialog.asStateFlow()
 
+    private val _onEdit =MutableStateFlow(false)
+    val onEdit :StateFlow<Boolean> = _onEdit.asStateFlow()
+
+
 
     var subject = mutableStateOf(Subject("",0,0,false))
 
@@ -133,8 +137,14 @@ class SubjectListViewModel
 
 
 
+    }
 
-
+    fun updateSubject() {
+        subject.value.timeStamp = System.currentTimeMillis()
+        viewModelScope.launch(IO) {
+            repository.updateSubject(subject.value)
+        }
+        _onEdit.value = false
     }
 
 
@@ -149,7 +159,6 @@ class SubjectListViewModel
 
         }
         return _subject
-
 
 
     }

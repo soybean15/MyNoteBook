@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.work.Operation.State.SUCCESS
+import com.example.mynotebook.domain.model.Subject
 
 @Composable
 fun CustomAlertDialog(
@@ -38,11 +39,6 @@ fun CustomAlertDialog(
         var success by remember {
             mutableStateOf(false)
         }
-//        if (success){
-//            onDismiss()
-//        }else{
-//            warning = "Please input Subject"
-//        }
 
 
 
@@ -134,9 +130,12 @@ fun CustomAlertDialog(
                                     success=false
                                     warning ="Please Enter Subject"
                                 }else{
-                                    onExecuteAdd()
-                                    success= true
-                                    onDismiss()
+
+                                        onExecuteAdd()
+                                        success= true
+                                        onDismiss()
+
+
                                 }
 
 
