@@ -2,13 +2,13 @@ package com.example.mynotebook.data.repository
 
 import com.example.mynotebook.data.data_source.SubjectDao
 import com.example.mynotebook.domain.model.Subject
-import com.example.mynotebook.domain.repository.AppRepository
+import com.example.mynotebook.domain.repository.SubjectRepository
 import kotlinx.coroutines.flow.Flow
 
-class AppRepositoryImpl(
+class SubjectRepositoryImpl(
     private val dao: SubjectDao
 
-) :AppRepository{
+) :SubjectRepository{
 
 
 

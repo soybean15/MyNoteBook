@@ -13,16 +13,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mynotebook.R
 
 
 @Composable
-fun BottomContainer() {
+fun BottomContainer(
+    onExpandAddScreen:()->Unit
+) {
     var text  by remember {
         mutableStateOf("")
     }
+
+
+    val focusRequester = FocusRequester()
     
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -33,7 +41,8 @@ fun BottomContainer() {
         
         Row() {
             Icon(
-                modifier = Modifier.align(CenterVertically)
+                modifier = Modifier
+                    .align(CenterVertically)
                     .padding(8.dp),
                 painter = painterResource(id = R.drawable.ic_baseline_attach_file_24),
                 contentDescription = "")
@@ -44,18 +53,28 @@ fun BottomContainer() {
                 },
                 modifier = Modifier
                     .fillMaxWidth(.85f)
-                    .padding(8.dp),
+                    .padding(8.dp)
+                    .focusRequester(focusRequester = focusRequester)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            onExpandAddScreen()
+                        }
+
+                    },
                 shape = RoundedCornerShape(30.dp),
+
+
             )
 
             Icon(
-                modifier = Modifier.align(CenterVertically)
+                modifier = Modifier
+                    .align(CenterVertically)
                     .padding(8.dp),
                 imageVector = Icons.Filled.Send,
                 contentDescription = "")
         }
         
     }
-    
+
     
 }

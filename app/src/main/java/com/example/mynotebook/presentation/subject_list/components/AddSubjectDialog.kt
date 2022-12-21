@@ -2,7 +2,6 @@ package com.example.mynotebook.presentation.subject_list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement.Absolute.Center
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -10,20 +9,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.work.Operation.State.SUCCESS
 import com.example.mynotebook.domain.model.Subject
 
 @Composable
 fun CustomAlertDialog(
     onDismiss: () -> Unit,
     onTextChange:(String)->Unit,
-    onExecuteAdd:()->Unit,
-    text:String,
+    onExecuteAction:()->Unit,
+    initial:String,
+    text: String,
+    title: String
 
 
 
@@ -38,6 +36,10 @@ fun CustomAlertDialog(
         }
         var success by remember {
             mutableStateOf(false)
+        }
+
+        var isInitial by remember{
+            mutableStateOf(true)
         }
 
 
@@ -71,7 +73,7 @@ fun CustomAlertDialog(
 
                         ) {
                         Text(
-                            text = "New Subject",
+                            text =title,
 
                         )
 
@@ -79,7 +81,7 @@ fun CustomAlertDialog(
                     }
 
                     OutlinedTextField(
-                        value = text,
+                        value = if (isInitial) initial else text,
                         label = { Text(text = "Enter Subject") },
                         onValueChange = {
                             onTextChange(it)
@@ -87,6 +89,7 @@ fun CustomAlertDialog(
                                 warning = ""
 
                             }
+                            isInitial = false
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -131,7 +134,7 @@ fun CustomAlertDialog(
                                     warning ="Please Enter Subject"
                                 }else{
 
-                                        onExecuteAdd()
+                                        onExecuteAction()
                                         success= true
                                         onDismiss()
 

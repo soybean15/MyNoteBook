@@ -12,12 +12,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mynotebook.BaseApplication
+import com.example.mynotebook.presentation.subject.component.AddItemScreen
 import com.example.mynotebook.presentation.subject.component.BottomContainer
 import com.example.mynotebook.presentation.subject.component.SubjectToolbar
 import com.example.mynotebook.ui.theme.MyNoteBookTheme
@@ -33,8 +35,8 @@ class SubjectFragment:Fragment() {
     private val viewModel: SubjectViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getInt("subject_id")?.let { recipeId ->
-            viewModel.getSubject(recipeId)
+        arguments?.getInt("subject_id")?.let { subjectId ->
+            viewModel.getSubjectWithTopics(subjectId)
 
         }
     }
@@ -52,10 +54,13 @@ class SubjectFragment:Fragment() {
 
                 val scaffoldState = rememberScaffoldState()
 
+                val expandAddScreen = viewModel.expandAddScreen.collectAsState()
+
 
 
                 val subject = viewModel.subject.value
                 MyNoteBookTheme(darkTheme = application.isDark.value) {
+
 
                     Scaffold(
                         topBar = {
@@ -65,7 +70,9 @@ class SubjectFragment:Fragment() {
                             )
                         },
                         bottomBar = {
-                            BottomContainer()
+                            BottomContainer(
+                                onExpandAddScreen = viewModel::expandAddScreen
+                            )
                         }
                     ) {
                         Column(
@@ -77,6 +84,9 @@ class SubjectFragment:Fragment() {
 
                         }
 
+                    }
+                    if (expandAddScreen.value){
+                        AddItemScreen()
                     }
 
                 }

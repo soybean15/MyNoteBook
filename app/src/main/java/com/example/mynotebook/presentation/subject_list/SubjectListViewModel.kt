@@ -1,15 +1,12 @@
 package com.example.mynotebook.presentation.subject_list
 
-import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 
 import androidx.lifecycle.*
 import com.example.mynotebook.domain.model.Subject
-import com.example.mynotebook.domain.repository.AppRepository
+import com.example.mynotebook.domain.repository.ItemRepository
+import com.example.mynotebook.domain.repository.SubjectRepository
 import com.example.mynotebook.ui.theme.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -27,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SubjectListViewModel
  @Inject constructor(
-    private val  repository: AppRepository,
+     private val  repository: SubjectRepository,
 ) :ViewModel(){
 
 
@@ -56,10 +53,9 @@ class SubjectListViewModel
     private val _showAddDialog = MutableStateFlow(false)
     val showAddDialog: StateFlow<Boolean> = _showAddDialog.asStateFlow()
 
-    private val _onEdit =MutableStateFlow(false)
-    val onEdit :StateFlow<Boolean> = _onEdit.asStateFlow()
 
-
+    private val _onAdd = MutableStateFlow(false)
+    val onAdd: StateFlow<Boolean> = _onAdd.asStateFlow()
 
     var subject = mutableStateOf(Subject("",0,0,false))
 
@@ -115,13 +111,15 @@ class SubjectListViewModel
             viewModelScope.launch(IO) {
 
 
-                    val subject = Subject(subjectToAdd.value,System.currentTimeMillis(), colors.random().toArgb(),false)
-                    repository.insertSubject(subject)
+                    val _subject = Subject(subjectToAdd.value,System.currentTimeMillis(), colors.random().toArgb(),false)
+                    repository.insertSubject(_subject)
 
 
                     subjectToAdd.value= ""
+                    subject.value =Subject("",0,0,false)
 
-        }
+
+            }
 
     }
 
@@ -141,10 +139,14 @@ class SubjectListViewModel
 
     fun updateSubject() {
         subject.value.timeStamp = System.currentTimeMillis()
+        subject.value.name = subjectToAdd.value
         viewModelScope.launch(IO) {
             repository.updateSubject(subject.value)
+
+            subjectToAdd.value= ""
+            subject.value =Subject("",0,0,false)
         }
-        _onEdit.value = false
+
     }
 
 
@@ -168,9 +170,18 @@ class SubjectListViewModel
     }
 
     fun onSubjectTextChange(text:String){
-        this.subjectToAdd.value = text
+
+            this.subjectToAdd.value = text
+
+
     }
 
+
+
+    fun onSetInitialText(text:String){
+        this.subjectToAdd.value = text
+
+    }
 
 
     fun toTimeDateString(longDate:Long): String {
@@ -187,12 +198,21 @@ class SubjectListViewModel
 
     fun onDialogDismiss() {
         _showDialog.value = false
+        _onAdd .value = false
     }
 
-    fun onOpenCustomDialog (){
+    fun onOpenCustomDialog_Add (){
         _showAddDialog.value = true
+        _onAdd.value = true
+    }
+
+    fun onOpenCustomDialog_Edit(subject: Subject){
+        _showAddDialog.value = true
+        this.subject.value = subject
     }
     fun onDismissCustomDialog (){
         _showAddDialog.value = false
+        _onAdd .value = false
+
     }
 }

@@ -1,9 +1,7 @@
 package com.example.mynotebook.presentation.subject_list
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.mynotebook.BaseApplication
-import com.example.mynotebook.domain.model.Subject
 import com.example.mynotebook.presentation.subject_list.components.AppDrawer
 import com.example.mynotebook.presentation.subject_list.components.CustomAlertDialog
 import com.example.mynotebook.presentation.subject_list.components.SearchBar
@@ -31,7 +28,7 @@ import com.example.mynotebook.ui.theme.MyNoteBookTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.example.mynotebook.R
-import kotlinx.coroutines.flow.collect
+import com.example.mynotebook.domain.model.Subject
 
 @AndroidEntryPoint
 class SubjectListFragment :Fragment(){
@@ -72,7 +69,7 @@ class SubjectListFragment :Fragment(){
                     Scaffold(
                         floatingActionButton  = {
                             FloatingActionButton(
-                                onClick = { viewModel.onOpenCustomDialog()},
+                                onClick = { viewModel.onOpenCustomDialog_Add()},
                                 backgroundColor = MaterialTheme.colors.primary,
 
 
@@ -149,6 +146,7 @@ class SubjectListFragment :Fragment(){
                                         showDialog = showDialogState,
                                         subjectToObserve = subjectToObserve,
                                         onDelete = viewModel::deleteSubject,
+                                        onEditClick = viewModel::onOpenCustomDialog_Edit
 
                                     )
 
@@ -163,8 +161,13 @@ class SubjectListFragment :Fragment(){
 
 
 
+                        val onAdd:Boolean by viewModel.onAdd.collectAsState()
+                        val subject :Subject by viewModel.subject
+
+
 
                         if (showCustomDialog.value){
+
                             CustomAlertDialog(
                                 onDismiss = {
                                     viewModel.onDismissCustomDialog()
@@ -172,8 +175,25 @@ class SubjectListFragment :Fragment(){
 
                                  ,
                                 onTextChange = viewModel::onSubjectTextChange,
-                                text = subjectStr,
-                                onExecuteAdd =  viewModel::addSubject,
+                                text = subjectStr
+
+                                ,
+                                onExecuteAction ={
+                                    if (onAdd){
+                                                      viewModel.addSubject()
+                                                  }else{
+                                                      viewModel.updateSubject()
+
+                                                  }
+                                }
+
+                                ,
+                                title = if(onAdd){
+                                    "New Subject"
+                                }else{
+                                    "Edit Subject"
+                                },
+                                initial = subject.name
 
 
 

@@ -1,8 +1,11 @@
 package com.example.mynotebook.domain.model
 
 import androidx.compose.ui.graphics.Color
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
+import kotlinx.coroutines.flow.Flow
 import java.io.Serializable
 
 
@@ -18,6 +21,9 @@ data class Subject (
 
 
 
-
-
 }
+
+data class SubjectWithTopics(
+    @Embedded val subject: Subject,
+    @Relation(parentColumn = "id", entityColumn = "subjectId", entity = Topic::class)val topics:List<Topic>
+)

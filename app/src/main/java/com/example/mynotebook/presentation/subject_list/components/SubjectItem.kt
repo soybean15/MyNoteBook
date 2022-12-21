@@ -42,6 +42,7 @@ fun SubjectItem(
     showDialog :Boolean,
     subjectToObserve:Subject,
     onDelete:()->Unit,
+    onEditClick:(Subject)->Unit
 
 
 ){
@@ -101,8 +102,9 @@ fun SubjectItem(
 
 
                                 if(index == 0){
+                                    expanded = !expanded
 
-                                //editCode
+                                onEditClick(subject)
 
 
                                 }else{

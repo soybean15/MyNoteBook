@@ -90,17 +90,23 @@ fun SubjectToolbar(
 
         Row() {
             Surface(
-                modifier = Modifier.padding(top = 8.dp,bottom = 8.dp),
+                modifier = Modifier.padding(8.dp),
                 shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colors.background
+                color = Color.Green
+
 
             ) {
-                Text(text = "TOPICS: ",
+                Text(text = "TOPICS+ ",
                     style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onSecondary,
-                    modifier = Modifier.padding(top = 8.dp,bottom = 8.dp)
+                    color = Color.White,
+                    modifier = Modifier
+
+                        .padding(8.dp)
                         .align(CenterVertically)
                 )
+
+
+
 
             }
             Row(
