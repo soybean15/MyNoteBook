@@ -14,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,6 +22,7 @@ import androidx.navigation.findNavController
 import com.example.mynotebook.BaseApplication
 import com.example.mynotebook.presentation.subject.component.AddItemScreen
 import com.example.mynotebook.presentation.subject.component.BottomContainer
+import com.example.mynotebook.presentation.subject.component.ColumnItem
 import com.example.mynotebook.presentation.subject.component.SubjectToolbar
 import com.example.mynotebook.ui.theme.MyNoteBookTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,7 +73,8 @@ class SubjectFragment:Fragment() {
                         },
                         bottomBar = {
                             BottomContainer(
-                                onExpandAddScreen = viewModel::expandAddScreen
+                                onExpandAddScreen = viewModel::expandAddScreen,
+                                onDismissAddScreen = viewModel::onDismissAddScreen
                             )
                         }
                     ) {
@@ -81,6 +84,9 @@ class SubjectFragment:Fragment() {
                                 .background(MaterialTheme.colors.background),
 
                             ) {
+                            ColumnItem(title = "Sample Title", content = "Sample Content", color = Color(subject.color) )
+
+
 
                         }
 

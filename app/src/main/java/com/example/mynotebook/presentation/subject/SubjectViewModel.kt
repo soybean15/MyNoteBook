@@ -67,4 +67,7 @@ class SubjectViewModel
     fun expandAddScreen(){
         _expandAddScreen.value = true
     }
+    fun onDismissAddScreen(){
+        _expandAddScreen.value = false
+    }
 }
